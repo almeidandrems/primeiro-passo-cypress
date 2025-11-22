@@ -1,11 +1,27 @@
 describe('Orange HRM tests', () => {
+
+  const selectorsList = {
+    usernameField: "[name='username']",
+    passwordField: "[name='password']",
+    loginButton: "[type='submit']",
+    sectionTitleTopBar: ".oxd-topbar-header-breadcrumb-module",
+    wrongCredentialsAlert: "[role='alert']"
+  }
+
   it('Login com sucesso', () => {
     cy.visit('https://opensource-demo.orangehrmlive.com/web/index.php/auth/login')
-    cy.get("[name='username']").type('Admin')
-    cy.get("[name='password']").type('admin123')
-    cy.get("[type='submit']").click()
+    cy.get(selectorsList.usernameField).type('Admin')
+    cy.get(selectorsList.passwordField).type('admin123')
+    cy.get(selectorsList.loginButton).click()
     cy.location('pathname').should('eq', '/web/index.php/dashboard/index')
-    cy.get(".oxd-topbar-header-breadcrumb-module")
+    cy.get(selectorsList.sectionTitleTopBar).contains('Dashboard') 
+  })
+  it('Login com falha', () => {
+    cy.visit('https://opensource-demo.orangehrmlive.com/web/index.php/auth/login')
+    cy.get(selectorsList.usernameField).type('tests')
+    cy.get(selectorsList.passwordField).type('admin123')
+    cy.get(selectorsList.loginButton).click()
+    cy.get(selectorsList.wrongCredentialsAlert)
   })
   
 })
